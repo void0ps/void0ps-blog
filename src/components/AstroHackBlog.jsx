@@ -295,12 +295,14 @@ export default function AstroHackerBlog({ posts = [] }) {
           </div>
           
           <div className="hidden md:flex items-center gap-8 font-mono text-sm z-50">
-            {['Blog', 'Projects', 'About'].map((item) => (
-              <a key={item} href="#" className="text-zinc-500 hover:text-cyan-400 transition-colors relative group overflow-hidden">
+            {['Blog', 'Projects', 'About'].map((item, index) => {
+              const href = item === 'Blog' ? '/' : item === 'About' ? '/about' : '#';
+              return (
+              <a key={item} href={href} className="text-zinc-500 hover:text-cyan-400 transition-colors relative group overflow-hidden">
                 <span className="relative z-10">{item}</span>
                 <span className="absolute bottom-0 left-0 w-full h-[1px] bg-cyan-400 -translate-x-[105%] group-hover:translate-x-0 transition-transform duration-300"></span>
               </a>
-            ))}
+            )})}
           </div>
         </div>
       </nav>
