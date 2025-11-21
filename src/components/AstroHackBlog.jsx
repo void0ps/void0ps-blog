@@ -6,7 +6,7 @@ import { Terminal, Cpu, Zap, Code, Layout, Globe, Shield, ChevronRight, X, Activ
 /**
  * 故障文字组件 (Glitch Text Effect)
  */
-const GlitchText = ({ text, as: Component = 'span', className = '' }) => {
+export const GlitchText = ({ text, as: Component = 'span', className = '' }) => {
   return (
     <Component className={`relative inline-block group ${className}`}>
       <span className="relative z-10">{text}</span>

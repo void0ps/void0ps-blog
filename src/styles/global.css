@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 自定义黑客字体和背景 */
+@layer base {
+  :root {
+    --font-mono: 'Fira Code', monospace;
+    --font-sans: 'Inter', sans-serif;
+  }
+  
+  body {
+    @apply bg-[#050508] text-zinc-300 font-sans;
+    overflow-x: hidden;
+  }
+}
+
+/* 动画工具类 */
+@layer utilities {
+  .glitch-hover:hover {
+    text-shadow: 2px 0 #a855f7, -2px 0 #22d3ee;
+  }
+  
+  .font-mono-headers h1, 
+  .font-mono-headers h2, 
+  .font-mono-headers h3 {
+    font-family: var(--font-mono);
+  }
+}
