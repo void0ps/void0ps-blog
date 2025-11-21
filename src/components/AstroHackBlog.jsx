@@ -138,21 +138,25 @@ export const GlitchText = ({ text, as: Component = 'span', className = '' }) => 
  * 打字机特效文字组件
  */
 const TypewriterIntro = () => {
-  const text = "> 身份验证成功...\n> 目标：探索数字边界\n> 技能：Web 渗透 / 逆向工程 / 漏洞挖掘\n> \"The quiet ones are the ones that change the universe.\"";
+  const text = [
+    '> OSCP owned',
+    '> share the malware evasion technique and pentest knowledge.'
+  ].join('\n');
   const [display, setDisplay] = useState('');
   
   useEffect(() => {
+    setDisplay('');
     let i = 0;
     const timer = setInterval(() => {
-      if (i < text.length) {
-        setDisplay(prev => prev + text.charAt(i));
-        i++;
-      } else {
+      if (i >= text.length) {
         clearInterval(timer);
+        return;
       }
+      setDisplay(prev => prev + text.charAt(i));
+      i++;
     }, 50);
     return () => clearInterval(timer);
-  }, []);
+  }, [text]);
 
   return (
     <div className="font-mono text-sm md:text-base leading-relaxed text-purple-400 h-full whitespace-pre-wrap">
