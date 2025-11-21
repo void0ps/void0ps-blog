@@ -1,0 +1,6 @@
+{
+  "attachmentFolderPath": "public/images",
+  "newLinkFormat": "absolute",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "src/content/posts"
+}

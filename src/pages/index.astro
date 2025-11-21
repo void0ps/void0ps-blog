@@ -1,16 +1,27 @@
 ---
-
+import AstroHackerBlog from '../components/AstroHackerBlog.jsx';
+import '../styles/global.css'; // 稍后创建
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Void0ps // Terminal</title>
+    <!-- 引入 Hacker 字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+       /* 确保 React 组件能全屏显示 */
+       html, body { margin: 0; padding: 0; background: #050508; }
+    </style>
+  </head>
+  <body>
+    <!-- 
+      client:only="react" 是关键！
+      告诉 Astro 这是一个纯客户端组件，不要在服务器端渲染它 
+      (因为里面用到了 window, document 等浏览器 API)
+    -->
+    <AstroHackerBlog client:only="react" />
+  </body>
 </html>
