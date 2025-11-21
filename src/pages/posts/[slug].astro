@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { GlitchText } from '../../components/AstroHackBlog.jsx'; // 假设你把小组件拆分了，或者自己写个简单的
+import '../../styles/global.css';
 
 // 1. 生成所有文章路径
 export async function getStaticPaths() {
@@ -20,6 +21,8 @@ const formattedDate = post.data.date?.toISOString().split('T')[0] || 'UNKNOWN_DA
 
 <html lang="zh-CN">
   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
     <title>{post.data.title} // Root Access</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   </head>
@@ -64,19 +67,5 @@ const formattedDate = post.data.date?.toISOString().split('T')[0] || 'UNKNOWN_DA
 
     <!-- 背景网格 -->
     <div class="fixed inset-0 bg-[linear-gradient(to_right,#1f1f2e2e_1px,transparent_1px),linear-gradient(to_bottom,#1f1f2e2e_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none z-0 opacity-50"></div>
-
-    <style is:global>
-        /* 自定义 Markdown 样式以匹配 Hacker 主题 */
-        .prose h1, .prose h2, .prose h3 { font-family: 'Fira Code', monospace; color: #fff; margin-top: 2em; }
-        .prose h2 { border-bottom: 1px dashed #3f3f46; padding-bottom: 0.5em; }
-        .prose h2::before { content: '## '; color: #a855f7; }
-        .prose p { line-height: 1.8; margin-bottom: 1.5em; color: #d4d4d8; }
-        .prose strong { color: #22d3ee; }
-        .prose code { background: #18181b; color: #e879f9; padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code', monospace; }
-        .prose pre { background: #09090b !important; border: 1px solid #27272a; border-radius: 8px; }
-        .prose a { color: #22d3ee; text-decoration: none; border-bottom: 1px solid #22d3ee; transition: all 0.2s; }
-        .prose a:hover { background: #22d3ee; color: #000; }
-        .prose blockquote { border-left-color: #a855f7; background: rgba(168,85,247,0.05); padding: 1em; font-style: normal; }
-    </style>
   </body>
 </html>

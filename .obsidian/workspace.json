@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "src/content/posts/LummaC2 v4.0 反沙盒技术原理.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "LummaC2 v4.0 反沙盒技术原理"
             }
           }
         ]
@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "tag:System",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -74,8 +74,7 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -95,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "src/content/posts/LummaC2 v4.0 反沙盒技术原理.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -105,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "README 的反向链接列表"
+              "title": "LummaC2 v4.0 反沙盒技术原理 的反向链接列表"
             }
           },
           {
@@ -114,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "src/content/posts/LummaC2 v4.0 反沙盒技术原理.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "README 的出链列表"
+              "title": "LummaC2 v4.0 反沙盒技术原理 的出链列表"
             }
           },
           {
@@ -157,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md",
+                "file": "src/content/posts/LummaC2 v4.0 反沙盒技术原理.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "README 的大纲"
+              "title": "LummaC2 v4.0 反沙盒技术原理 的大纲"
             }
           }
         ]
@@ -185,21 +184,30 @@
       "yet-another-obsidian-synchronizer:YAOS": false
     }
   },
-  "active": "e152872487b87c8c",
+  "active": "92168a322d2e48e9",
   "lastOpenFiles": [
-    "dist/posts/hello-world/index.html",
-    "dist/posts/hello-world",
-    "dist/posts",
-    "dist/index.html",
-    "dist/manifest_DxSGQ_YT.mjs",
-    "dist/_astro/index.Cd_vQiNd.js",
-    "dist/_astro/AstroHackBlog.98UCBZdT.js",
-    "dist/_astro/client.BLUn-lwI.js",
-    "dist/noop-entrypoint.mjs",
-    "dist/renderers.mjs",
-    "dist/_noop-middleware.mjs",
-    "dist/favicon.svg",
+    "public/images/反沙箱_1758940994049 1.png",
+    "public/images/反沙箱_1758940845108 1.png",
+    "public/images/反沙箱_2025-09-27 1.png",
+    "node_modules/lucide-react/dist/esm/icons/square-dashed-bottom-code.js.map",
+    "node_modules/lucide-react/dist/esm/icons/shopping-bag.js.map",
+    "node_modules/scheduler/index.js",
+    "node_modules/scheduler/package.json",
+    "public/images/反沙箱_1758940994049.png",
+    "public/images/反沙箱_1758940845108.png",
+    "public/images/反沙箱_2025-09-27.png",
     "src/content/posts/hello-world.md",
+    "src/content/posts/LummaC2 v4.0 反沙盒技术原理.md",
+    "public/favicon.svg",
+    "README.md",
+    "templates/Blog Post Template.md",
+    "templates",
+    "src/pages/posts/slug.astro",
+    "node_modules/csstype/index.d.ts",
+    "node_modules/lucide-react/dist/lucide-react.d.ts",
+    "node_modules/tailwindcss/types/generated/default-theme.d.ts",
+    "node_modules/tailwindcss/types/generated/corePluginList.d.ts",
+    "dist/favicon.svg",
     "node_modules/@astrojs/react/README.md",
     "node_modules/@babel/runtime/README.md",
     "node_modules/tailwindcss/node_modules/chokidar/README.md",
@@ -220,9 +228,6 @@
     "node_modules/micromatch/README.md",
     "node_modules/to-regex-range/README.md",
     "node_modules/fill-range/README.md",
-    "node_modules/ts-interface-checker/README.md",
-    "node_modules/@nodelib/fs.walk/README.md",
-    "node_modules/micromatch/node_modules/picomatch/CHANGELOG.md",
-    "node_modules/tailwindcss/node_modules/picomatch/CHANGELOG.md"
+    "node_modules/ts-interface-checker/README.md"
   ]
 }

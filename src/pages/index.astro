@@ -1,6 +1,15 @@
 ---
-import AstroHackerBlog from '../components/AstroHackBlog.jsx';
-import '../styles/global.css'; // 稍后创建
+// 1. 确保引用文件名正确：是 AstroHackerBlog.jsx (注意 Hacker 的拼写)
+import AstroHackBlog from '../components/AstroHackBlog.jsx';
+import { getCollection } from 'astro:content';
+import '../styles/global.css';
+
+// 获取所有已发布的文章，并按日期倒序排列
+const posts = (await getCollection('posts', ({ data }) => {
+  return import.meta.env.PROD ? data.draft !== true : true;
+})).sort(
+	(a, b) => (b.data.date?.valueOf() || 0) - (a.data.date?.valueOf() || 0)
+);
 ---
 
 <html lang="zh-CN">
@@ -8,20 +17,15 @@ import '../styles/global.css'; // 稍后创建
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Void0ps // Terminal</title>
-    <!-- 引入 Hacker 字体 -->
+    <title>Void0ps // Digital Garden</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-       /* 确保 React 组件能全屏显示 */
-       html, body { margin: 0; padding: 0; background: #050508; }
-    </style>
+    <!-- 
+      注意：styles 必须放在 html 标签内，
+      绝对不能包住上面的 '---' Frontmatter 区域 
+    -->
   </head>
   <body>
-    <!-- 
-      client:only="react" 是关键！
-      告诉 Astro 这是一个纯客户端组件，不要在服务器端渲染它 
-      (因为里面用到了 window, document 等浏览器 API)
-    -->
-    <AstroHackerBlog client:only="react" />
+    <!-- 把真实的 posts 数据传给 React 组件 -->
+    <AstroHackBlog client:only="react" posts={posts} />
   </body>
 </html>
