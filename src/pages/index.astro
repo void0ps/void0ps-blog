@@ -1,6 +1,7 @@
 ---
 // 1. 确保引用文件名正确：是 AstroHackerBlog.jsx (注意 Hacker 的拼写)
 import AstroHackBlog from '../components/AstroHackBlog.jsx';
+import LandingPage from '../components/LandingPage.jsx';
 import { getCollection } from 'astro:content';
 import '../styles/global.css';
 
@@ -26,6 +27,6 @@ const posts = (await getCollection('posts', ({ data }) => {
   </head>
   <body>
     <!-- 把真实的 posts 数据传给 React 组件 -->
-    <AstroHackBlog client:only="react" posts={posts} />
+    <LandingPage client:only="react" posts={posts} />
   </body>
 </html>

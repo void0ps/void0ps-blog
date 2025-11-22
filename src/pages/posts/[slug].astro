@@ -1,10 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
 import { GlitchText } from '../../components/AstroHackBlog.jsx'; // 假设你把小组件拆分了，或者自己写个简单的
 import '../../styles/global.css';
 
 // 1. 生成所有文章路径
 export async function getStaticPaths() {
+  const { getCollection } = await import('astro:content');
   const posts = await getCollection('posts');
   return posts.map(post => ({
     params: { slug: post.slug },
@@ -13,7 +13,11 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
+
+const tocHeadings = (headings ?? []).filter(
+  (heading) => heading.depth >= 1 && heading.depth <= 3
+);
 
 // 格式化日期
 const formattedDate = post.data.date?.toISOString().split('T')[0] || 'UNKNOWN_DATE';
@@ -26,11 +30,15 @@ const formattedDate = post.data.date?.toISOString().split('T')[0] || 'UNKNOWN_DA
     <title>{post.data.title} // Root Access</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-[#050508] text-zinc-300 font-sans min-h-screen selection:bg-purple-500/30">
-    
+  <body class="bg-[#050505] text-slate-300 font-sans min-h-screen selection:bg-purple-500/30 selection:text-purple-200 relative overflow-x-hidden">
+    <!-- 顶部阅读进度条 -->
+    <div class="fixed top-0 left-0 h-[2px] bg-purple-600 z-50 shadow-[0_0_10px_purple]">
+      <div id="reading-progress" class="h-full w-0 bg-purple-400/80 transition-[width] duration-150 ease-out"></div>
+    </div>
+
     <!-- 顶部导航 (复用黑客风格) -->
-    <nav class="border-b border-white/5 bg-[#050508]/80 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+    <nav class="border-b border-white/5 bg-[#050508]/80 backdrop-blur-md sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="/" class="font-mono font-bold text-lg tracking-tighter hover:text-purple-400 transition-colors">
                 <span class="text-purple-500">&lt;</span>cd ..<span class="text-zinc-600">/&gt;</span>
             </a>
@@ -40,32 +48,167 @@ const formattedDate = post.data.date?.toISOString().split('T')[0] || 'UNKNOWN_DA
         </div>
     </nav>
 
-    <main class="max-w-4xl mx-auto px-6 py-12 relative z-10">
-        <!-- 文章头部 -->
-        <header class="mb-12 border-b border-zinc-800 pb-8">
-            <div class="flex gap-2 mb-4">
-                {post.data.tags && post.data.tags.map(tag => (
-                    <span class="text-xs font-mono px-2 py-1 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">
-                        #{tag}
-                    </span>
-                ))}
-            </div>
-            <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4 glitch-hover">
-                {post.data.title}
-            </h1>
-            <div class="font-mono text-zinc-500 text-sm flex gap-4">
-                <span>> AUTHOR: Root</span>
-                <span>> DATE: {formattedDate}</span>
-            </div>
-        </header>
+    <main class="relative z-10 max-w-6xl mx-auto px-6 pt-20 pb-32 flex gap-12">
+        <section class="flex-1 max-w-3xl">
+            <!-- 文章头部 -->
+            <header class="mb-12 border-b border-white/5 pb-8">
+                <div class="flex flex-wrap gap-2 mb-4">
+                    {post.data.tags && post.data.tags.map(tag => (
+                        <span class="tag-chip">
+                            <span class="tag-chip-dot"></span>
+                            <span class="tag-chip-label">#{tag}</span>
+                        </span>
+                    ))}
+                </div>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4 glitch-hover">
+                    {post.data.title}
+                </h1>
+                <div class="font-mono text-zinc-500 text-sm flex flex-wrap gap-4">
+                    <span>> AUTHOR: Root</span>
+                    <span>> DATE: {formattedDate}</span>
+                </div>
+            </header>
 
-        <!-- Markdown 内容区域 (使用 Typography 插件或自定义 CSS) -->
-        <article class="prose prose-invert prose-purple max-w-none font-mono-headers">
-            <Content />
-        </article>
+            <!-- Markdown 内容区域 (使用 Typography 插件或自定义 CSS) -->
+            <article class="prose prose-invert prose-slate max-w-none font-mono-headers prose-headings:text-white prose-p:leading-8 prose-p:text-slate-300" data-article>
+                <Content />
+            </article>
+        </section>
+
+        <!-- 右侧：HUD 风格目录 (仅在大屏显示) -->
+        <aside class="hidden lg:block w-64 relative">
+          <div class="sticky top-32 border-l border-white/10 pl-6">
+            <h5 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Table of Contents</h5>
+            <ul class="space-y-4">
+              {tocHeadings.length > 0 ? (
+                tocHeadings.map((heading) => (
+                  <li
+                    class="toc-item text-sm text-slate-500 hover:text-slate-300 transition-colors cursor-pointer pl-1"
+                    data-toc-item
+                    data-heading-id={heading.slug}
+                  >
+                    <a href={`#${heading.slug}`} class="flex items-center gap-3">
+                      <div class="toc-item-bar w-[2px] h-6 bg-purple-500 mr-5 shadow-[0_0_8px_purple] opacity-0"></div>
+                      <span class="toc-item-label">{heading.text}</span>
+                    </a>
+                  </li>
+                ))
+              ) : (
+                <li class="text-xs text-slate-600 tracking-[0.2em] uppercase">NO SIGNAL</li>
+              )}
+            </ul>
+
+            <div class="mt-12 p-4 bg-slate-900/50 rounded border border-white/5 font-mono text-[10px] text-slate-600 leading-tight">
+              <div class="flex justify-between mb-1">
+                <span>MEM_USAGE</span>
+                <span class="text-green-500">12%</span>
+              </div>
+              <div class="w-full bg-slate-800 h-1 mb-3">
+                <div class="w-[12%] bg-green-500 h-full"></div>
+              </div>
+              <div class="flex justify-between">
+                <span>THREAT_LVL</span>
+                <span class="text-yellow-500">LOW</span>
+              </div>
+            </div>
+          </div>
+        </aside>
     </main>
 
-    <!-- 背景网格 -->
-    <div class="fixed inset-0 bg-[linear-gradient(to_right,#1f1f2e2e_1px,transparent_1px),linear-gradient(to_bottom,#1f1f2e2e_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none z-0 opacity-50"></div>
+    <!-- 背景层：网格 + 聚光灯效果 -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+      <div
+        class="absolute inset-0 opacity-[0.03]"
+        style="background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px); background-size: 50px 50px;"
+      ></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/80 to-[#050505]"></div>
+      <div class="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-purple-900/20 blur-[120px] rounded-full"></div>
+    </div>
+
+    <script>
+      const setupReadingUI = () => {
+        const progressEl = document.getElementById('reading-progress');
+        const articleNode = document.querySelector('[data-article]');
+        const tocItems = Array.from(document.querySelectorAll('[data-toc-item]'));
+
+        if (!(articleNode instanceof HTMLElement)) return;
+        const articleEl = articleNode;
+
+        const updateProgress = () => {
+          const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+          const scrollTop = window.scrollY || window.pageYOffset;
+          const articleTop = articleEl.offsetTop;
+          const articleHeight = articleEl.offsetHeight;
+          const start = articleTop - viewportHeight * 0.2;
+          const end = articleTop + articleHeight - viewportHeight * 0.6;
+          const raw = (scrollTop - start) / (end - start || 1);
+          const clamped = Math.max(0, Math.min(1, raw));
+
+          if (progressEl) {
+            progressEl.style.width = `${clamped * 100}%`;
+          }
+        };
+
+        /** @type {HTMLElement[]} */
+        const headingTargets = [];
+        /** @type {Map<HTMLElement, HTMLElement>} */
+        const headingMap = new Map();
+
+        tocItems.forEach((item) => {
+          const id = item.getAttribute('data-heading-id');
+          if (!id) return;
+          const targetNode = document.getElementById(id);
+          if (!(targetNode instanceof HTMLElement)) return;
+          headingTargets.push(targetNode);
+          headingMap.set(targetNode, item);
+        });
+
+        /** @type {IntersectionObserver | null} */
+        let observer = null;
+
+        if (headingTargets.length > 0 && 'IntersectionObserver' in window) {
+          observer = new IntersectionObserver(
+            (entries) => {
+              const visible = entries
+                .filter((entry) => entry.isIntersecting)
+                .sort((a, b) => a.target.offsetTop - b.target.offsetTop);
+
+              const activeTarget = visible[0]?.target;
+              if (!(activeTarget instanceof HTMLElement)) return;
+
+              tocItems.forEach((item) => item.classList.remove('toc-item-active'));
+              const activeItem = headingMap.get(activeTarget);
+              if (activeItem) {
+                activeItem.classList.add('toc-item-active');
+              }
+            },
+
+            {
+              root: null,
+              threshold: [0.1, 0.3, 0.6],
+              rootMargin: '-20% 0px -60% 0px',
+            }
+          );
+
+          headingTargets.forEach((target) => observer && observer.observe(target));
+        }
+
+        updateProgress();
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        window.addEventListener('resize', updateProgress);
+
+        return () => {
+          window.removeEventListener('scroll', updateProgress);
+          window.removeEventListener('resize', updateProgress);
+          if (observer) observer.disconnect();
+        };
+      };
+
+      if (typeof window !== 'undefined') {
+        window.addEventListener('load', () => {
+          setupReadingUI();
+        });
+      }
+    </script>
   </body>
 </html>
